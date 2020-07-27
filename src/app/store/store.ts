@@ -1,5 +1,6 @@
 import { ActionTypes } from "./actions";
 import { v4 as uuidv4 } from "uuid";
+// ---------- Initial state--------------------
 
 export const initialState = {
   searchText: null,
@@ -9,6 +10,8 @@ export const initialState = {
 };
 export function rootReducer(state = initialState, action) {
   switch (action.type) {
+    // ---------- Case for saving new note in records--------------------
+
     case ActionTypes.Save:
       let newNoteToAdd = {
         ...action.payload,
@@ -20,6 +23,8 @@ export function rootReducer(state = initialState, action) {
         ...state,
         notes: newNotesAfterAdd,
       };
+    // ---------- Case for updating note in records--------------------
+
     case ActionTypes.Update:
       let newNoteToUp = {
         ...action.payload,
@@ -34,6 +39,8 @@ export function rootReducer(state = initialState, action) {
         ...state,
         notes: newNotesAfterUpdate,
       };
+    // ---------- Case for deleting selected note--------------------
+
     case ActionTypes.Remove:
       let newNotesAfterRemove = [
         ...state.notes.filter((item) => item.id !== action.payload.id),
@@ -43,6 +50,8 @@ export function rootReducer(state = initialState, action) {
         ...state,
         notes: newNotesAfterRemove,
       };
+    // ---------- Case for adding empty note--------------------
+
     case ActionTypes.AddNewEmptyNote:
       let newNote = {
         id: uuidv4(),
@@ -55,6 +64,8 @@ export function rootReducer(state = initialState, action) {
         isEdit: false,
         selectedNote: newNote,
       };
+    // ---------- Case for selecting note--------------------
+
     case ActionTypes.SelectNote:
       let noteToSelect = action.payload;
       let notesAfterSelectedNote = [
@@ -68,6 +79,8 @@ export function rootReducer(state = initialState, action) {
         notes: notesAfterSelectedNote,
         selectedNote: noteToSelect,
       };
+    // ---------- Case for updating selected note--------------------
+
     case ActionTypes.UpdateSelectedNote:
       let newNoteToUpdate = {
         ...state.selectedNote,
@@ -77,6 +90,7 @@ export function rootReducer(state = initialState, action) {
         ...state,
         selectedNote: newNoteToUpdate,
       };
+    // ---------- Case for searching through notes--------------------
     case ActionTypes.SearchNotes:
       let textToSearch = action.payload.toLowerCase();
       let notesAfterSearch = [
