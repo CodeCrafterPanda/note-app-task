@@ -1,1 +1,15 @@
-<p>note works!</p>
+<div class="grid-container">
+  <form class="search-form">
+    <mat-form-field class="search-full-width">
+      <textarea
+        name="note"
+        id="note"
+        cols="30"
+        rows="10"
+        matInput
+        value="{{ (note$ | async)?.title + (note$ | async).description }}"
+        (keyup)="typeNote($event)"
+      ></textarea>
+    </mat-form-field>
+  </form>
+</div>

@@ -1,1 +1,88 @@
-<p>main works!</p>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <!-- {{ note | json }} -->
+    <mat-list>
+      <mat-list-item *ngIf="note | async">
+        <h2 matLine>
+          <strong>{{
+            (note | async)?.title ? (note | async)?.title : "New Note"
+          }}</strong>
+        </h2>
+        <p matLine>
+          <span> {{ (note | async)?.time | date: "short" }} </span>
+          <span class="demo-2">
+            --
+            {{
+              (note | async)?.description
+                ? (note | async)?.description
+                : "No additional Text"
+            }}
+          </span>
+        </p>
+      </mat-list-item>
+      <mat-list-item
+        *ngFor="let note of notes$ | async"
+        (click)="selectNote(note)"
+      >
+        <h2 matLine>
+          <strong>{{ note.title ? note.title : "New Note" }}</strong>
+        </h2>
+        <p matLine>
+          <span> {{ note.time | date: "short" }} </span>
+          <span class="demo-2">
+            --
+            {{ note.description ? note.description : "No additional Text" }}
+          </span>
+        </p>
+      </mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="secondary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="spacer"></span>
+      <button
+        mat-icon-button
+        class="example-icon save-icon"
+        aria-label="icon-button with save icon"
+        (click)="saveNote()"
+      >
+        <mat-icon>save</mat-icon>
+      </button>
+      <span class="spacer"></span>
+
+      <button
+        mat-icon-button
+        class="example-icon"
+        aria-label="icon-button with delete icon"
+        (click)="removeNote()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+      <span class="spacer"></span>
+
+      <form class="search-form">
+        <mat-form-field class="search-full-width">
+          <input matInput (keyup)="searchNotes($event)" />
+        </mat-form-field>
+      </form>
+      <!-- <span class="spacer">Time</span> -->
+    </mat-toolbar>
+    <app-note></app-note>
+  </mat-sidenav-content>
+</mat-sidenav-container>
